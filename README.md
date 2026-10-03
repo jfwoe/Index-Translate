@@ -23,7 +23,7 @@ Index-Translate is a family of multilingual translation models built on Qwen3.5.
 
 The radar includes **35B-A3B (preview), 9B, and 2B**, with fixed per-axis min–max ranges across all 14 models. Its seven axes are WMT, FLORES, instruction following, low-resource translation, subtitles, MEME, and books/fiction. Instruction following averages instTrans and IFMTBench IFscore. The normalized scale is not an accuracy percentage. The gray dashed line combines the best non-Index score on each axis and does not represent one model. [Raw category scores](docs/assets/seven_category_scores_raw.csv) · [Figure notes](docs/assets/README.md) · [Individual benchmark results](docs/evaluation.md).
 
-[Models](#models) · [Quick start](#quick-start) · [Examples](#examples) · [Evaluation](#evaluation) · [Benchmarks](#benchmarks) · [Applications](#applications) · [TODO](#todo) · [Papers and citation](#papers-and-citation)
+[Models](#models) · [Quick start](#quick-start) · [Instruction Following](#instruction-following--constrained-translation) · [Examples](#examples) · [Evaluation](#evaluation) · [Benchmarks](#benchmarks) · [Applications](#applications) · [TODO](#todo) · [Papers and citation](#papers-and-citation)
 
 ## Models
 
@@ -38,6 +38,8 @@ The links below provide **2B, 9B, and 35B-A3B (preview)** text-model checkpoints
 | **Index-NativeLong** | Long documents; fixed templates: zh↔en, zh↔ja | [2B](https://huggingface.co/IndexTeam/Index-Nailong-2B) · [9B](https://huggingface.co/IndexTeam/Index-Nailong-9B) | [2B](https://modelscope.cn/models/IndexTeam/Index-Nailong-2B) · [9B](https://modelscope.cn/models/IndexTeam/Index-Nailong-9B) | [Guide](inference/llm/README.md) |
 
 **Naming:** Index-NativeLong is published under the model IDs `IndexTeam/Index-Nailong-2B` and `IndexTeam/Index-Nailong-9B`. Use those IDs in commands. Language support for the speech and long-document packages is listed separately from the text models' 150-language coverage.
+
+**Quantized builds (text models):** GGUF for llama.cpp local inference — [2B](https://huggingface.co/IndexTeam/Index-Translate-2B-GGUF) · [9B](https://huggingface.co/IndexTeam/Index-Translate-9B-GGUF) · [35B-A3B (preview)](https://huggingface.co/IndexTeam/Index-Translate-35B-A3B-preview-GGUF) (all bit-widths in one repository per model; mmproj included) — and FP8 for vLLM serving — [2B](https://huggingface.co/IndexTeam/Index-Translate-2B-FP8) · [9B](https://huggingface.co/IndexTeam/Index-Translate-9B-FP8) · [35B-A3B (preview)](https://huggingface.co/IndexTeam/Index-Translate-35B-A3B-preview-FP8). The same repositories are available on [ModelScope](https://modelscope.cn/organization/IndexTeam).
 
 ## Inference
 
@@ -69,6 +71,42 @@ See [captured cases](inference/llm/cases/translate_cases.jsonl), [text inference
 
 For audio, use the dedicated [S2TT subtitle guide](inference/echo-s2tt/README.md) or [S2ST dubbing guide](inference/echo-s2st/README.md).
 
+### Instruction Following & Constrained Translation
+
+Index-Translate deeply integrates instruction-following capabilities (instTrans). It supports both **hard constraints (format preservation, strict terminology glossary enforcement)** and **soft constraints (tone & style, domain disambiguation)** out of the box via `translate.py` and `syllable_translate.py`:
+
+```bash
+# Hard constraint 1: Strict terminology glossary enforcement (-g / --glossary)
+python inference/llm/translate.py \
+  "王平仲采用了更加昂贵的碳纤维材料。碳纤维的好处就是它抗裂缝。" \
+  --target en -g "碳纤维:carbon fiber, 抗裂缝:crack resistance"
+
+# Hard constraint 2: Format & structure preservation (-H / --hard)
+python inference/llm/translate.py \
+  '{"user_id": 1024, "event": "purchase", "message": "您的订单已支付完成。"}' \
+  --target en -H "保留源文中的 JSON 格式标记不变"
+
+# Soft constraint 1: Tone and style adjustment (-S / --soft) + genre (-d / --genre)
+python inference/llm/translate.py \
+  "今天下午的会议临时取消了，改天我们再碰一下商量。" \
+  --target en -d "商务邮件" -S "调整为严谨、正式、礼貌的商务公文风格"
+
+# Soft constraint 2: Domain context and word-sense disambiguation (-S / --soft)
+python inference/llm/translate.py \
+  "The plant is operating at full capacity after the spring upgrade." \
+  --target zh -d "工业制造" -S "语境为工业制造与重工厂房领域，准确消歧专有名词（如 plant 译为工厂而非植物）"
+
+# Syllable control synergy: Index-Homura strictly respects syllable budgets while embedding glossaries
+python inference/llm/syllable_translate.py \
+  "我们今天去看电影吧" --syllables 7 --target en --glossary "电影:cinema"
+```
+
+> **instTrans Specification & Constraint Details:**
+> - **Canonical Prompt**: Automatically formatted by the client into the instTrans benchmark structure (`【源文】` + numbered `1. 【硬性要求】...` / `2. 【注意】...` + suffix instructions).
+> - **Hard Constraints**: Structural formatting (JSON/CSV/code/placeholders), terminology glossaries, social elements, and syllable ordering. Binary gated ($g_{\mathrm{hard}}$); any single failure zeroes the instance score.
+> - **Soft Constraints**: Tone/style adaptation, contextual sense disambiguation, cross-sentence consistency, and LaTeX preservation. Evaluated on a graded scale ($q_{\mathrm{soft}}$).
+> - See the [text inference guide](inference/llm/README.md) and [instruction cases](inference/llm/cases/instruction_cases.jsonl) for full examples.
+
 ### Default inference settings
 
 This is the shared reference for the repository clients and the released Echo packages. Translate covers **2B / 9B / 35B-A3B (preview)**; the other families cover **2B / 9B**. Decoding defaults are shared across sizes within each family.
@@ -97,7 +135,7 @@ This is the shared reference for the repository clients and the released Echo pa
 | Speech sampler | — | — | — | — | Fixed `sampling=25`; CosyVoice RAS defaults `top_p=0.8`, `top_k=25` |
 | Speech-token budget | — | — | — | — | Maximum `min(1500, 20 * m)`; minimum `2 * m` |
 | Speech speed / sample rate | — | — | — | — | `speed=1.0`; `24000` Hz |
-| Main overrides | `--model`, `--temperature`, `--max-tokens` | `--model`, `--syllables`, `--temperature`, `--max-tokens` | `--model`, `--direction`, `--max-tokens` | `--size`, `--temperature`, `--max-new-tokens`, `--max-win`, `--ctx-k`, `--glossary` | `--model-dir`, `--lang`; lower-level API for budgets / seed |
+| Main overrides | `--model`, `--instruction`, `--glossary`, `--temperature`, `--max-tokens` | `--model`, `--syllables`, `--glossary`, `--temperature`, `--max-tokens` | `--model`, `--direction`, `--max-tokens` | `--size`, `--temperature`, `--max-new-tokens`, `--max-win`, `--ctx-k`, `--glossary` | `--model-dir`, `--lang`; lower-level API for budgets / seed |
 
 - **Text clients:** default to `http://127.0.0.1:8000/v1` with API key `EMPTY`. Use `--base-url` / `--api-key` or `OPENAI_BASE_URL` / `OPENAI_API_KEY`; `--model` overrides `INDEX_MODEL` and the default checkpoint. Serve 35B-A3B manually and select it with `--model IndexTeam/Index-Translate-35B-A3B-preview`.
 - **Budgets:** Homura's `len(text)` is the Python character count after trimming input. NativeLong's omitted `max_tokens` leaves the output cap to the server; context capacity and server limits still apply. Pass a positive `--max-tokens` for an explicit cap. Context includes the full prompt and generated output; override serving limits with `--max-model-len`.
@@ -248,6 +286,7 @@ Join the [QQ group (960123527)](https://qm.qq.com/q/xSASqaiEGA) for discussion a
 
 ## News
 
+- **2026-10-03:** released official quantized builds of the 2B / 9B / 35B-A3B (preview) text models: GGUF for llama.cpp local inference (F16 + Q8_0/Q6_K/Q5/Q4/Q3/Q2_K/IQ4_XS, all bit-widths in one repository per model, vision mmproj included) and FP8 (compressed-tensors W8A8) for vLLM serving, on Hugging Face and ModelScope.
 - **2026-09-30:** released Index-Translate, with 2B / 9B / 35B-A3B (preview) text-model weights on Hugging Face and ModelScope, the technical report, and the online demo.
 
 ## TODO
@@ -256,6 +295,8 @@ Join the [QQ group (960123527)](https://qm.qq.com/q/xSASqaiEGA) for discussion a
 - [ ] Open-source instTrans, SandGlass-V2, nailong-bench, and meme-bench.
 - [ ] Add support for more languages to Index-Echo.
 - [ ] Release larger models.
+- [ ] Release QAT (quantization-aware training) builds for higher-quality low-bit quantization.
+- [ ] Integrate with Unsloth for efficient fine-tuning and inference.
 
 ## Papers and citation
 
