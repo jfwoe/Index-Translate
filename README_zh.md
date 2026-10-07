@@ -4,13 +4,18 @@
 <p align="center"><strong>多语言翻译模型家族</strong><br>文本、语音、可控配音与长文档翻译</p>
 
 <p align="center">
-  <a href="https://index-translate.bilibili.com/">🌐 在线 Demo</a> ·
-  <a href="https://huggingface.co/collections/IndexTeam/index-translate">🤗 Hugging Face</a> ·
-  <a href="https://modelscope.cn/collections/IndexTeam/Index-Translate"><img src="docs/assets/modelscope.svg" width="16" height="16" alt=""> ModelScope</a> ·
-  <a href="https://arxiv.org/abs/2609.40181">📚 技术报告</a> ·
-  <a href="https://huggingface.co/collections/IndexTeam/index-translate-papers-6abe1f5452920941ea0682d9">🤗 论文合集</a> ·
-  <a href="https://qm.qq.com/q/xSASqaiEGA">🐧 QQ 交流群</a>
+  <a href="https://index-translate.bilibili.com/">🌐&nbsp;Demo</a> ·
+  <a href="#方式一免费公网-api-快速调用无需本地-gpu">⚡&nbsp;<b>免费 API</b></a> ·
+  <a href="https://huggingface.co/collections/IndexTeam/index-translate">🤗&nbsp;Hugging&nbsp;Face</a> ·
+  <a href="https://modelscope.cn/collections/IndexTeam/Index-Translate"><img src="docs/assets/modelscope.svg" width="16" height="16" alt="">&nbsp;ModelScope</a> ·
+  <a href="https://arxiv.org/abs/2609.40181">📚&nbsp;报告</a> ·
+  <a href="https://huggingface.co/collections/IndexTeam/index-translate-papers-6abe1f5452920941ea0682d9">🤗&nbsp;论文</a> ·
+  <a href="https://huggingface.co/collections/IndexTeam/index-translate-benchmarks-6ac16fee5057f40abd7d31b7">🤗&nbsp;Benchmarks</a> ·
+  <a href="https://qm.qq.com/q/xSASqaiEGA">🐧&nbsp;QQ群</a>
 </p>
+
+> [!TIP]
+> 🚀 **官方免费 API 现已开放！** 无需本地显卡环境，直接免费调用 **Index-Translate-35B-A3B** 旗舰翻译模型。完全兼容 OpenAI 接口规范（Base URL: `https://index-translate.bilibili.com/v1`）。支持免依赖脚本即开即用：`python inference/llm/call_api.py "你好，世界" --target en`！👉 [快速上手指南](#方式一免费公网-api-快速调用无需本地-gpu)
 
 Index-Translate 是基于 Qwen3.5 构建的多语言翻译模型家族。文本模型覆盖**150 种语言**，支持术语、格式、保留内容等翻译指令，并将共同的多语基础扩展到语音、音节可控翻译和长文档翻译。
 
@@ -25,7 +30,22 @@ Index-Translate 是基于 Qwen3.5 构建的多语言翻译模型家族。文本�
 
 雷达图采用官网七类聚合分数，在完整对比模型集合上固定各维度的 min–max 范围进行归一化，并非准确率。灰色虚线是各维度非 Index 模型的最高值组合，不代表一个实际模型。[原始聚合分数](docs/assets/seven_category_scores_raw.csv) · [图表说明](docs/assets/README.md) · [单项评测结果](docs/evaluation_zh.md)。
 
-[模型下载](#模型下载) · [快速上手](#快速上手) · [指令遵循](#指令遵循与约束翻译) · [精选案例](#精选案例) · [评测结果](#评测结果) · [Benchmarks](#benchmarks) · [应用工具](#应用工具) · [TODO](#todo) · [论文与引用](#论文与引用)
+[最新动态](#最新动态) · [⚡ 免费 API](#方式一免费公网-api-快速调用无需本地-gpu) · [模型下载](#模型下载) · [快速上手](#快速上手) · [指令遵循](#指令遵循与约束翻译) · [精选案例](#精选案例) · [评测结果](#评测结果) · [Benchmarks](#benchmarks) · [应用工具](#应用工具) · [TODO](#todo) · [论文与引用](#论文与引用)
+
+## 最新动态
+
+- **2026-10-04：** 正式开放 35B-A3B 免费公网 API 接口（[index-translate.bilibili.com/v1](https://index-translate.bilibili.com)），完全兼容 OpenAI 规范。支持通过 [call_api.py](inference/llm/call_api.py) 免 GPU 快速调用。
+- **2026-10-04：** 发布四个 [Index-Translate benchmarks](#benchmarks)；Hugging Face 提供数据／元数据，GitHub 同步评测脚本和运行说明。
+- **2026-10-03：** 发布全家族官方量化版本（Hugging Face 与 ModelScope 同步开放）—— 包含适用于 llama.cpp 本地推理的 **GGUF**，以及适用于 vLLM 部署的 **FP8**（W8A8）与 **NVFP4**（W4A4，面向 Blackwell GPU）。
+- **2026-09-30：** Index-Translate 正式发布，2B / 9B / 35B-A3B（preview）文本模型权重在 Hugging Face 与 ModelScope 开放，技术报告与在线 Demo 上线。
+
+## TODO
+
+- [x] 发布全家族官方量化版本（GGUF 用于 llama.cpp 本地推理，FP8 与 NVFP4 用于 vLLM 部署）。
+- [ ] 发布 Index-Translate-35B-A3B 正式版。
+- [x] 发布 instTrans、MEME、SandGlass 与 NAtIveLong 的数据／元数据和评测代码，见 [Benchmarks](#benchmarks)。
+- [ ] 为 Index-Echo 增加更多语种支持。
+- [ ] 发布更大规模的模型。
 
 ## 模型下载
 
@@ -33,7 +53,7 @@ Index-Translate 是基于 Qwen3.5 构建的多语言翻译模型家族。文本�
 
 | 模型 | 任务与发布包覆盖 | Hugging Face | ModelScope | 推理 |
 |---|---|---|---|---|
-| **Index-Translate** | 150 种语言的文本翻译与指令遵循 | [2B](https://huggingface.co/IndexTeam/Index-Translate-2B) · [9B](https://huggingface.co/IndexTeam/Index-Translate-9B) · [35B-A3B (preview)](https://huggingface.co/IndexTeam/Index-Translate-35B-A3B-preview) | [2B](https://modelscope.cn/models/IndexTeam/Index-Translate-2B) · [9B](https://modelscope.cn/models/IndexTeam/Index-Translate-9B) · [35B-A3B (preview)](https://modelscope.cn/models/IndexTeam/Index-Translate-35B-A3B-preview) | [使用说明](inference/llm/README_zh.md) |
+| **Index-Translate** | 150 种语言的文本翻译与指令遵循 | [2B](https://huggingface.co/IndexTeam/Index-Translate-2B) · [9B](https://huggingface.co/IndexTeam/Index-Translate-9B) · [35B-A3B (preview)](https://huggingface.co/IndexTeam/Index-Translate-35B-A3B-preview) ([⚡免费API](#方式一免费公网-api-快速调用无需本地-gpu)) | [2B](https://modelscope.cn/models/IndexTeam/Index-Translate-2B) · [9B](https://modelscope.cn/models/IndexTeam/Index-Translate-9B) · [35B-A3B (preview)](https://modelscope.cn/models/IndexTeam/Index-Translate-35B-A3B-preview) | [使用说明](inference/llm/README_zh.md) · [免费API](inference/llm/call_api.py) |
 | **Index-Echo S2TT** | 语音转字幕；发布脚本支持中→英/日/西 | [2B](https://huggingface.co/IndexTeam/Index-Echo-S2TT-2B) · [9B](https://huggingface.co/IndexTeam/Index-Echo-S2TT-9B) | [2B](https://modelscope.cn/models/IndexTeam/Index-Echo-S2TT-2B) · [9B](https://modelscope.cn/models/IndexTeam/Index-Echo-S2TT-9B) | [使用说明](inference/echo-s2tt/README_zh.md) |
 | **Index-Echo S2ST** | 语音配音；中→英/西/日，英→中/西/日 | [2B](https://huggingface.co/IndexTeam/Index-Echo-S2ST-2B) · [9B](https://huggingface.co/IndexTeam/Index-Echo-S2ST-9B) | [2B](https://modelscope.cn/models/IndexTeam/Index-Echo-S2ST-2B) · [9B](https://modelscope.cn/models/IndexTeam/Index-Echo-S2ST-9B) | [使用说明](inference/echo-s2st/README_zh.md) |
 | **Index-Homura** | 按指定目标音节数翻译 | [2B](https://huggingface.co/IndexTeam/Index-Homura-2B) · [9B](https://huggingface.co/IndexTeam/Index-Homura-9B) | [2B](https://modelscope.cn/models/IndexTeam/Index-Homura-2B) · [9B](https://modelscope.cn/models/IndexTeam/Index-Homura-9B) | [使用说明](inference/llm/README_zh.md) |
@@ -41,11 +61,58 @@ Index-Translate 是基于 Qwen3.5 构建的多语言翻译模型家族。文本�
 
 **命名说明：** Index-NativeLong 的实际模型仓库 ID 为 `IndexTeam/Index-Nailong-2B` 和 `IndexTeam/Index-Nailong-9B`，运行命令请使用这两个 ID。语音与长文档发布包的语言覆盖见上表，文本模型的 150 种语言覆盖不等同于每个专门模型的接口覆盖。
 
-**量化版本（文本模型）：** 适用于 llama.cpp 本地推理的 GGUF —— [2B](https://huggingface.co/IndexTeam/Index-Translate-2B-GGUF) · [9B](https://huggingface.co/IndexTeam/Index-Translate-9B-GGUF) · [35B-A3B (preview)](https://huggingface.co/IndexTeam/Index-Translate-35B-A3B-preview-GGUF)（每个模型的全部位宽在同一仓库，含视觉 mmproj）——以及适用于 vLLM 部署的 FP8 —— [2B](https://huggingface.co/IndexTeam/Index-Translate-2B-FP8) · [9B](https://huggingface.co/IndexTeam/Index-Translate-9B-FP8) · [35B-A3B (preview)](https://huggingface.co/IndexTeam/Index-Translate-35B-A3B-preview-FP8)。以上仓库在 [ModelScope](https://modelscope.cn/organization/IndexTeam) 同步开放。
+**量化版本：** 以上全部模型均同步发布 **GGUF**（适用于 llama.cpp 本地推理；每个模型的全部位宽在同一仓库，含视觉 mmproj）、**FP8**（compressed-tensors W8A8，适用于 vLLM 部署）与 **FP4**（compressed-tensors NVFP4 W4A4，面向 Blackwell GPU）。其中 Index-Echo 语音模型的 GGUF 仓库**仅包含文本 LLM 主干**，FP8/FP4 仓库则包含**完整管线**（LLM 为量化版本）。所有仓库在 [ModelScope](https://modelscope.cn/organization/IndexTeam) 同步开放。
+
+| 模型 | GGUF（llama.cpp） | FP8（vLLM） | FP4（vLLM，Blackwell） |
+|---|---|---|---|
+| **Index-Translate** | [2B](https://huggingface.co/IndexTeam/Index-Translate-2B-GGUF) · [9B](https://huggingface.co/IndexTeam/Index-Translate-9B-GGUF) · [35B-A3B (preview)](https://huggingface.co/IndexTeam/Index-Translate-35B-A3B-preview-GGUF) | [2B](https://huggingface.co/IndexTeam/Index-Translate-2B-FP8) · [9B](https://huggingface.co/IndexTeam/Index-Translate-9B-FP8) · [35B-A3B (preview)](https://huggingface.co/IndexTeam/Index-Translate-35B-A3B-preview-FP8) | [2B](https://huggingface.co/IndexTeam/Index-Translate-2B-FP4) · [9B](https://huggingface.co/IndexTeam/Index-Translate-9B-FP4) · [35B-A3B (preview)](https://huggingface.co/IndexTeam/Index-Translate-35B-A3B-preview-FP4) |
+| **Index-Homura** | [2B](https://huggingface.co/IndexTeam/Index-Homura-2B-GGUF) · [9B](https://huggingface.co/IndexTeam/Index-Homura-9B-GGUF) | [2B](https://huggingface.co/IndexTeam/Index-Homura-2B-FP8) · [9B](https://huggingface.co/IndexTeam/Index-Homura-9B-FP8) | [2B](https://huggingface.co/IndexTeam/Index-Homura-2B-FP4) · [9B](https://huggingface.co/IndexTeam/Index-Homura-9B-FP4) |
+| **Index-NativeLong** | [2B](https://huggingface.co/IndexTeam/Index-Nailong-2B-GGUF) · [9B](https://huggingface.co/IndexTeam/Index-Nailong-9B-GGUF) | [2B](https://huggingface.co/IndexTeam/Index-Nailong-2B-FP8) · [9B](https://huggingface.co/IndexTeam/Index-Nailong-9B-FP8) | [2B](https://huggingface.co/IndexTeam/Index-Nailong-2B-FP4) · [9B](https://huggingface.co/IndexTeam/Index-Nailong-9B-FP4) |
+| **Index-Echo S2TT** | [2B](https://huggingface.co/IndexTeam/Index-Echo-S2TT-2B-GGUF) · [9B](https://huggingface.co/IndexTeam/Index-Echo-S2TT-9B-GGUF)（LLM 主干） | [2B](https://huggingface.co/IndexTeam/Index-Echo-S2TT-2B-FP8) · [9B](https://huggingface.co/IndexTeam/Index-Echo-S2TT-9B-FP8)（完整管线） | [2B](https://huggingface.co/IndexTeam/Index-Echo-S2TT-2B-FP4) · [9B](https://huggingface.co/IndexTeam/Index-Echo-S2TT-9B-FP4)（完整管线） |
+| **Index-Echo S2ST** | [2B](https://huggingface.co/IndexTeam/Index-Echo-S2ST-2B-GGUF) · [9B](https://huggingface.co/IndexTeam/Index-Echo-S2ST-9B-GGUF)（LLM 主干） | [2B](https://huggingface.co/IndexTeam/Index-Echo-S2ST-2B-FP8) · [9B](https://huggingface.co/IndexTeam/Index-Echo-S2ST-9B-FP8)（完整管线） | [2B](https://huggingface.co/IndexTeam/Index-Echo-S2ST-2B-FP4) · [9B](https://huggingface.co/IndexTeam/Index-Echo-S2ST-9B-FP4)（完整管线） |
 
 ## 推理
 
 ### 快速上手
+
+#### 方式一：免费公网 API 快速调用（无需本地 GPU）
+
+你可以直接免费调用公网 35B-A3B 模型接口，无需本地显卡环境。推荐使用官方零外部依赖 Python 脚本 [`inference/llm/call_api.py`](inference/llm/call_api.py)：
+
+```bash
+# 1. 命令行快速翻译（零外部依赖，标准库即开即用）
+python inference/llm/call_api.py "你好，世界。今天天气不错，我们去公园散步吧。" --target en
+
+# 2. 沉浸式翻译（Immersive Translate）等浏览器插件配置（需启动本地代理）：
+# 浏览器扩展受同源策略 (CORS) 与请求头限制，且需强制关闭思考输出，请在本地启动代理服务：
+python inference/llm/call_api.py --serve
+# 启动后在沉浸式翻译中配置：
+# - 翻译服务: 自定义 / OpenAI
+# - 接口地址 (API URL): http://127.0.0.1:8080/v1
+# - 模型名称 (Model): Index-Translate-35B-A3B
+# - API Key: 随意填写（如 index）
+
+# 选项 A：标准 Chat Completions API（兼容 OpenAI 规范）
+curl https://index-translate.bilibili.com/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "Index-Translate-35B-A3B",
+    "messages": [{"role": "user", "content": "请将以下文本翻译为英语，直接输出翻译结果，不要进行任何解释。\n\n你好，世界。"}]
+  }'
+
+# 选项 B：最新 OpenAI Responses API（适配 client.responses.create / POST /v1/responses）
+curl https://index-translate.bilibili.com/v1/responses \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "Index-Translate-35B-A3B",
+    "input": "请将以下文本翻译为英语，直接输出翻译结果，不要进行任何解释。\n\n你好，世界。"
+  }'
+```
+
+> [!TIP]
+> **沉浸式翻译 (Immersive Translate) 提醒**：沉浸式翻译等浏览器插件直连公网端点时，受限于浏览器跨域限制 (CORS)、WAF 保护以及思维链 (CoT) 格式要求，请使用 [`inference/llm/call_api.py`](inference/llm/call_api.py) 提供的本地代理模式（`python inference/llm/call_api.py --serve`）。在插件中将自定义 OpenAI 接口地址填写为 `http://127.0.0.1:8080/v1`、模型选择 `Index-Translate-35B-A3B` 即可流畅体验！
+
+#### 方式二：本地私有化部署（vLLM）
 
 先用 2B 文本模型完成一次翻译。需要 CUDA GPU 和支持 Qwen3.5 的 vLLM 版本，在终端中运行：
 
@@ -267,13 +334,18 @@ GuoFeng 与 BWB Track A3 的 64K 中文侧 token 档位结果。
 
 ## Benchmarks
 
-| Benchmark | 评估内容 | 数据范围 |
-|---|---|---|
-| **instTrans** | 分别衡量译文质量与翻译指令遵循 | 3,000 条中文到 20 种语言的任务，另有 2,793 条低资源任务；10 类约束 |
-| **MEME** | 社区表达中的含义、自然度与文化语境 | 3,638 条中译英样例；703 个词语、857 个区分后的词义 |
-| **SandGlass** | 译文质量与目标音节数控制 | 3,600 条案例：300 句字幕 × 4 种目标语言 × 3 档长度预算 |
+数据与元数据收录于 [🤗 Index-Translate Benchmarks 合集](https://huggingface.co/collections/IndexTeam/index-translate-benchmarks-6ac16fee5057f40abd7d31b7)，评测脚本、固定版本的数据下载工具和运行说明见 [benchmarks/](benchmarks/README.md)。
 
-**发布状态：** Benchmark 开源计划见 [TODO](#todo)，开放后会补充下载入口。目前可在[技术报告](https://arxiv.org/abs/2609.40181)中查看评测设置；[IFMTBench 处理说明](docs/evaluation_zh.md#ifmtbench-处理说明)单独列出。
+| Benchmark | 公开内容 | 数据下载 | 评测代码与说明 |
+|---|---|---|---|
+| **instTrans** | 3,000 条翻译指令任务；10 类约束 | [🤗 InstTrans-Bench](https://huggingface.co/datasets/IndexTeam/InstTrans-Bench) | [insttrans](benchmarks/insttrans/README.md) |
+| **MEME** | 3,638 条中译英样例；703 个词语、857 个词义 | [🤗 Meme-Translation-Bench](https://huggingface.co/datasets/IndexTeam/Meme-Translation-Bench) | [meme](benchmarks/meme/README.md) |
+| **SandGlass** | 3,600 条案例：300 句字幕 × 4 种目标语言 × 3 档长度预算 | [🤗 Sandglass-Bench](https://huggingface.co/datasets/IndexTeam/Sandglass-Bench) | [sandglass](benchmarks/sandglass/README.md) |
+| **NAtIveLong** | BWB / GuoFeng 各 84 条长文档案例的元数据、评测代码和获取说明 | [🤗 NAtIveLong](https://huggingface.co/datasets/IndexTeam/NAtIveLong) | [nativelong](benchmarks/nativelong/README.md) |
+
+NAtIveLong 不包含小说原文或参考译文；BWB 需自行获取官方语料，GuoFeng 提供本地重建工具。以上 instTrans 发布包不包含评测表中的 2,793 条低资源扩展任务。评测脚本保留原有 prompt；审查修复与验证范围记录在各目录的 `RELEASE_REVIEW.md`，历史成绩未重新评测。各 benchmark 的许可分别见其目录，不能直接套用仓库根目录许可。
+
+[完整评测设置](docs/evaluation_zh.md)与 [IFMTBench 处理说明](docs/evaluation_zh.md#ifmtbench-处理说明)另行列出。
 
 ## 应用工具
 
@@ -285,20 +357,6 @@ GuoFeng 与 BWB Track A3 的 64K 中文侧 token 档位结果。
 欢迎加入 [QQ 交流群（960123527）](https://qm.qq.com/q/xSASqaiEGA)，交流使用体验、反馈问题与建议。也可以扫描下方二维码加入群聊。
 
 <p align="center"><a href="https://qm.qq.com/q/xSASqaiEGA"><img src="docs/assets/qq-group.jpg" width="320" alt="QQ 交流群 960123527 加群二维码"></a></p>
-
-## 最新动态
-
-- **2026-10-03：** 发布 2B / 9B / 35B-A3B（preview）文本模型的官方量化版本：适用于 llama.cpp 本地推理的 GGUF（F16 + Q8_0/Q6_K/Q5/Q4/Q3/Q2_K/IQ4_XS，每个模型全部位宽在同一仓库，含视觉 mmproj）与适用于 vLLM 部署的 FP8（compressed-tensors W8A8），已在 Hugging Face 与 ModelScope 同步开放。
-- **2026-09-30：** Index-Translate 正式发布，2B / 9B / 35B-A3B（preview）文本模型权重在 Hugging Face 与 ModelScope 开放，技术报告与在线 Demo 上线。
-
-## TODO
-
-- [ ] 发布 Index-Translate-35B-A3B 正式版。
-- [ ] 开源 instTrans、SandGlass-V2、nailong-bench 和 meme-bench。
-- [ ] 为 Index-Echo 增加更多语种支持。
-- [ ] 发布更大规模的模型。
-- [ ] 发布 QAT（量化感知训练）版本，提供更高质量的低比特量化。
-- [ ] 接入 Unsloth，支持高效微调与推理。
 
 ## 论文与引用
 

@@ -4,13 +4,18 @@
 <p align="center"><strong>A Multilingual Translation Model Family</strong><br>Text, Speech, Controlled Dubbing, and Long-Document Translation</p>
 
 <p align="center">
-  <a href="https://index-translate.bilibili.com/">🌐 Online Demo</a> ·
-  <a href="https://huggingface.co/collections/IndexTeam/index-translate">🤗 Hugging Face</a> ·
-  <a href="https://modelscope.cn/collections/IndexTeam/Index-Translate"><img src="docs/assets/modelscope.svg" width="16" height="16" alt=""> ModelScope</a> ·
-  <a href="https://arxiv.org/abs/2609.40181">📚 Technical Report</a> ·
-  <a href="https://huggingface.co/collections/IndexTeam/index-translate-papers-6abe1f5452920941ea0682d9">🤗 Papers Collection</a> ·
-  <a href="https://qm.qq.com/q/xSASqaiEGA">🐧 QQ Group</a>
+  <a href="https://index-translate.bilibili.com/">🌐&nbsp;Demo</a> ·
+  <a href="#option-1-free-online-api-zero-gpu-setup">⚡&nbsp;<b>Free API</b></a> ·
+  <a href="https://huggingface.co/collections/IndexTeam/index-translate">🤗&nbsp;Hugging&nbsp;Face</a> ·
+  <a href="https://modelscope.cn/collections/IndexTeam/Index-Translate"><img src="docs/assets/modelscope.svg" width="16" height="16" alt="">&nbsp;ModelScope</a> ·
+  <a href="https://arxiv.org/abs/2609.40181">📚&nbsp;Report</a> ·
+  <a href="https://huggingface.co/collections/IndexTeam/index-translate-papers-6abe1f5452920941ea0682d9">🤗&nbsp;Papers</a> ·
+  <a href="https://huggingface.co/collections/IndexTeam/index-translate-benchmarks-6ac16fee5057f40abd7d31b7">🤗&nbsp;Benchmarks</a> ·
+  <a href="https://qm.qq.com/q/xSASqaiEGA">🐧&nbsp;QQ</a>
 </p>
+
+> [!TIP]
+> 🚀 **Free Public API Now Available!** Call **Index-Translate-35B-A3B** directly with zero GPU setup. Fully OpenAI-compatible at `https://index-translate.bilibili.com/v1`. Try it in seconds with `python inference/llm/call_api.py "Hello, world!" --target zh`! 👉 [API Quick Start](#option-1-free-online-api-zero-gpu-setup)
 
 Index-Translate is a family of multilingual translation models built on Qwen3.5. The text models cover **150 languages** and follow translation instructions such as terminology, formatting, and content-preservation requirements. The family extends this foundation to speech, syllable-controlled translation, and full-document translation.
 
@@ -23,7 +28,22 @@ Index-Translate is a family of multilingual translation models built on Qwen3.5.
 
 The radar includes **35B-A3B (preview), 9B, and 2B**, with fixed per-axis min–max ranges across all 14 models. Its seven axes are WMT, FLORES, instruction following, low-resource translation, subtitles, MEME, and books/fiction. Instruction following averages instTrans and IFMTBench IFscore. The normalized scale is not an accuracy percentage. The gray dashed line combines the best non-Index score on each axis and does not represent one model. [Raw category scores](docs/assets/seven_category_scores_raw.csv) · [Figure notes](docs/assets/README.md) · [Individual benchmark results](docs/evaluation.md).
 
-[Models](#models) · [Quick start](#quick-start) · [Instruction Following](#instruction-following--constrained-translation) · [Examples](#examples) · [Evaluation](#evaluation) · [Benchmarks](#benchmarks) · [Applications](#applications) · [TODO](#todo) · [Papers and citation](#papers-and-citation)
+[News](#news) · [⚡ Free API](#option-1-free-online-api-zero-gpu-setup) · [Models](#models) · [Quick start](#quick-start) · [Instruction Following](#instruction-following--constrained-translation) · [Examples](#examples) · [Evaluation](#evaluation) · [Benchmarks](#benchmarks) · [Applications](#applications) · [TODO](#todo) · [Papers and citation](#papers-and-citation)
+
+## News
+
+- **2026-10-04:** released free public API endpoints on [index-translate.bilibili.com/v1](https://index-translate.bilibili.com) for Index-Translate-35B-A3B. Fully OpenAI-compatible. Try it with [call_api.py](inference/llm/call_api.py).
+- **2026-10-04:** released four [Index-Translate benchmarks](#benchmarks), with datasets/metadata on Hugging Face and evaluation scripts and guides on GitHub.
+- **2026-10-03:** released official quantized builds across the family on Hugging Face and ModelScope — **GGUF** for llama.cpp local inference, alongside **FP8** (W8A8) and **NVFP4** (W4A4, Blackwell-optimized) for vLLM serving.
+- **2026-09-30:** released Index-Translate, with 2B / 9B / 35B-A3B (preview) text-model weights on Hugging Face and ModelScope, the technical report, and the online demo.
+
+## TODO
+
+- [x] Release official quantized builds (GGUF for llama.cpp local inference, FP8 and NVFP4 for vLLM serving) for the whole family.
+- [ ] Release the official version of Index-Translate-35B-A3B.
+- [x] Release instTrans, MEME, SandGlass and NAtIveLong data/metadata and evaluation code; see [Benchmarks](#benchmarks).
+- [ ] Add support for more languages to Index-Echo.
+- [ ] Release larger models.
 
 ## Models
 
@@ -31,7 +51,7 @@ The links below provide **2B, 9B, and 35B-A3B (preview)** text-model checkpoints
 
 | Model | Task and released package coverage | Hugging Face | ModelScope | Inference |
 |---|---|---|---|---|
-| **Index-Translate** | Text translation and instructions across 150 languages | [2B](https://huggingface.co/IndexTeam/Index-Translate-2B) · [9B](https://huggingface.co/IndexTeam/Index-Translate-9B) · [35B-A3B (preview)](https://huggingface.co/IndexTeam/Index-Translate-35B-A3B-preview) | [2B](https://modelscope.cn/models/IndexTeam/Index-Translate-2B) · [9B](https://modelscope.cn/models/IndexTeam/Index-Translate-9B) · [35B-A3B (preview)](https://modelscope.cn/models/IndexTeam/Index-Translate-35B-A3B-preview) | [Guide](inference/llm/README.md) |
+| **Index-Translate** | Text translation and instructions across 150 languages | [2B](https://huggingface.co/IndexTeam/Index-Translate-2B) · [9B](https://huggingface.co/IndexTeam/Index-Translate-9B) · [35B-A3B (preview)](https://huggingface.co/IndexTeam/Index-Translate-35B-A3B-preview) ([⚡Free API](#option-1-free-online-api-zero-gpu-setup)) | [2B](https://modelscope.cn/models/IndexTeam/Index-Translate-2B) · [9B](https://modelscope.cn/models/IndexTeam/Index-Translate-9B) · [35B-A3B (preview)](https://modelscope.cn/models/IndexTeam/Index-Translate-35B-A3B-preview) | [Guide](inference/llm/README.md) · [Free API](inference/llm/call_api.py) |
 | **Index-Echo S2TT** | Speech → subtitles; packaged script: zh→en/ja/es | [2B](https://huggingface.co/IndexTeam/Index-Echo-S2TT-2B) · [9B](https://huggingface.co/IndexTeam/Index-Echo-S2TT-9B) | [2B](https://modelscope.cn/models/IndexTeam/Index-Echo-S2TT-2B) · [9B](https://modelscope.cn/models/IndexTeam/Index-Echo-S2TT-9B) | [Guide](inference/echo-s2tt/README.md) |
 | **Index-Echo S2ST** | Speech → speech; zh→en/es/ja, en→zh/es/ja | [2B](https://huggingface.co/IndexTeam/Index-Echo-S2ST-2B) · [9B](https://huggingface.co/IndexTeam/Index-Echo-S2ST-9B) | [2B](https://modelscope.cn/models/IndexTeam/Index-Echo-S2ST-2B) · [9B](https://modelscope.cn/models/IndexTeam/Index-Echo-S2ST-9B) | [Guide](inference/echo-s2st/README.md) |
 | **Index-Homura** | Translation with a target syllable count | [2B](https://huggingface.co/IndexTeam/Index-Homura-2B) · [9B](https://huggingface.co/IndexTeam/Index-Homura-9B) | [2B](https://modelscope.cn/models/IndexTeam/Index-Homura-2B) · [9B](https://modelscope.cn/models/IndexTeam/Index-Homura-9B) | [Guide](inference/llm/README.md) |
@@ -39,11 +59,58 @@ The links below provide **2B, 9B, and 35B-A3B (preview)** text-model checkpoints
 
 **Naming:** Index-NativeLong is published under the model IDs `IndexTeam/Index-Nailong-2B` and `IndexTeam/Index-Nailong-9B`. Use those IDs in commands. Language support for the speech and long-document packages is listed separately from the text models' 150-language coverage.
 
-**Quantized builds (text models):** GGUF for llama.cpp local inference — [2B](https://huggingface.co/IndexTeam/Index-Translate-2B-GGUF) · [9B](https://huggingface.co/IndexTeam/Index-Translate-9B-GGUF) · [35B-A3B (preview)](https://huggingface.co/IndexTeam/Index-Translate-35B-A3B-preview-GGUF) (all bit-widths in one repository per model; mmproj included) — and FP8 for vLLM serving — [2B](https://huggingface.co/IndexTeam/Index-Translate-2B-FP8) · [9B](https://huggingface.co/IndexTeam/Index-Translate-9B-FP8) · [35B-A3B (preview)](https://huggingface.co/IndexTeam/Index-Translate-35B-A3B-preview-FP8). The same repositories are available on [ModelScope](https://modelscope.cn/organization/IndexTeam).
+**Quantized builds:** every model above is also published in **GGUF** (llama.cpp local inference; all bit-widths in one repository per model, vision mmproj included where applicable), **FP8** (compressed-tensors W8A8, ready for vLLM serving), and **FP4** (compressed-tensors NVFP4 W4A4, for Blackwell GPUs). For the Index-Echo speech models, the GGUF repositories contain the **text LLM backbone only**, while the FP8/FP4 repositories ship the **complete pipeline** with a quantized LLM. All repositories are mirrored on [ModelScope](https://modelscope.cn/organization/IndexTeam).
+
+| Model | GGUF (llama.cpp) | FP8 (vLLM) | FP4 (vLLM, Blackwell) |
+|---|---|---|---|
+| **Index-Translate** | [2B](https://huggingface.co/IndexTeam/Index-Translate-2B-GGUF) · [9B](https://huggingface.co/IndexTeam/Index-Translate-9B-GGUF) · [35B-A3B (preview)](https://huggingface.co/IndexTeam/Index-Translate-35B-A3B-preview-GGUF) | [2B](https://huggingface.co/IndexTeam/Index-Translate-2B-FP8) · [9B](https://huggingface.co/IndexTeam/Index-Translate-9B-FP8) · [35B-A3B (preview)](https://huggingface.co/IndexTeam/Index-Translate-35B-A3B-preview-FP8) | [2B](https://huggingface.co/IndexTeam/Index-Translate-2B-FP4) · [9B](https://huggingface.co/IndexTeam/Index-Translate-9B-FP4) · [35B-A3B (preview)](https://huggingface.co/IndexTeam/Index-Translate-35B-A3B-preview-FP4) |
+| **Index-Homura** | [2B](https://huggingface.co/IndexTeam/Index-Homura-2B-GGUF) · [9B](https://huggingface.co/IndexTeam/Index-Homura-9B-GGUF) | [2B](https://huggingface.co/IndexTeam/Index-Homura-2B-FP8) · [9B](https://huggingface.co/IndexTeam/Index-Homura-9B-FP8) | [2B](https://huggingface.co/IndexTeam/Index-Homura-2B-FP4) · [9B](https://huggingface.co/IndexTeam/Index-Homura-9B-FP4) |
+| **Index-NativeLong** | [2B](https://huggingface.co/IndexTeam/Index-Nailong-2B-GGUF) · [9B](https://huggingface.co/IndexTeam/Index-Nailong-9B-GGUF) | [2B](https://huggingface.co/IndexTeam/Index-Nailong-2B-FP8) · [9B](https://huggingface.co/IndexTeam/Index-Nailong-9B-FP8) | [2B](https://huggingface.co/IndexTeam/Index-Nailong-2B-FP4) · [9B](https://huggingface.co/IndexTeam/Index-Nailong-9B-FP4) |
+| **Index-Echo S2TT** | [2B](https://huggingface.co/IndexTeam/Index-Echo-S2TT-2B-GGUF) · [9B](https://huggingface.co/IndexTeam/Index-Echo-S2TT-9B-GGUF) (LLM backbone) | [2B](https://huggingface.co/IndexTeam/Index-Echo-S2TT-2B-FP8) · [9B](https://huggingface.co/IndexTeam/Index-Echo-S2TT-9B-FP8) (full pipeline) | [2B](https://huggingface.co/IndexTeam/Index-Echo-S2TT-2B-FP4) · [9B](https://huggingface.co/IndexTeam/Index-Echo-S2TT-9B-FP4) (full pipeline) |
+| **Index-Echo S2ST** | [2B](https://huggingface.co/IndexTeam/Index-Echo-S2ST-2B-GGUF) · [9B](https://huggingface.co/IndexTeam/Index-Echo-S2ST-9B-GGUF) (LLM backbone) | [2B](https://huggingface.co/IndexTeam/Index-Echo-S2ST-2B-FP8) · [9B](https://huggingface.co/IndexTeam/Index-Echo-S2ST-9B-FP8) (full pipeline) | [2B](https://huggingface.co/IndexTeam/Index-Echo-S2ST-2B-FP4) · [9B](https://huggingface.co/IndexTeam/Index-Echo-S2ST-9B-FP4) (full pipeline) |
 
 ## Inference
 
 ### Quick start
+
+#### Option 1: Free Online API (Zero GPU Setup)
+
+You can call our free online API directly without local GPUs. We recommend using our zero-dependency Python script [`inference/llm/call_api.py`](inference/llm/call_api.py):
+
+```bash
+# 1. Quick command-line translation (zero dependencies, works out-of-the-box)
+python inference/llm/call_api.py "你好，世界。今天天气不错，我们去公园散步吧。" --target en
+
+# 2. Local proxy bridge for browser extensions (e.g. Immersive Translate / 沉浸式翻译)
+# Browser extensions require a local bridge proxy due to CORS/WAF headers and thinking tag suppression:
+python inference/llm/call_api.py --serve
+# Then configure Immersive Translate:
+# - Service: Custom / OpenAI
+# - API URL: http://127.0.0.1:8080/v1
+# - Model: Index-Translate-35B-A3B
+# - API Key: Any string (e.g. index)
+
+# Option A: Standard Chat Completions API (OpenAI-compatible)
+curl https://index-translate.bilibili.com/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "Index-Translate-35B-A3B",
+    "messages": [{"role": "user", "content": "请将以下文本翻译为英语，直接输出翻译结果，不要进行任何解释。\n\n你好，世界。"}]
+  }'
+
+# Option B: Modern OpenAI Responses API (compatible with client.responses.create / POST /v1/responses)
+curl https://index-translate.bilibili.com/v1/responses \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "Index-Translate-35B-A3B",
+    "input": "请将以下文本翻译为英语，直接输出翻译结果，不要进行任何解释。\n\n你好，世界。"
+  }'
+```
+
+> [!TIP]
+> **Immersive Translate Notice**: When using browser extensions like Immersive Translate (沉浸式翻译), direct connections to public endpoints may encounter browser CORS restrictions, WAF header protections, or unintended chain-of-thought (CoT) reasoning output. Please run the local proxy via [`inference/llm/call_api.py`](inference/llm/call_api.py) (`python inference/llm/call_api.py --serve`), and configure the API URL in the extension to `http://127.0.0.1:8080/v1` with model `Index-Translate-35B-A3B`.
+
+#### Option 2: Self-hosted local vLLM
 
 Start with the 2B text model on a CUDA GPU using a vLLM build with Qwen3.5 support. From a terminal:
 
@@ -265,13 +332,18 @@ For the specialized models, Index-Homura-9B reaches **81.92% within 10% of the t
 
 ## Benchmarks
 
-| Benchmark | What it evaluates | Coverage |
-|---|---|---|
-| **instTrans** | Translation quality and compliance with user instructions, scored separately | 3,000 Chinese-to-20-language tasks, plus 2,793 low-resource tasks; 10 constraint types |
-| **MEME** | Meaning, naturalness, and cultural context in community expressions | 3,638 Chinese-to-English examples; 703 terms and 857 distinct senses |
-| **SandGlass** | Translation quality and control of target syllable counts | 3,600 cases: 300 subtitle sentences × 4 target languages × 3 length budgets |
+Find the datasets and metadata in the [🤗 Index-Translate Benchmarks collection](https://huggingface.co/collections/IndexTeam/index-translate-benchmarks-6ac16fee5057f40abd7d31b7). Evaluation scripts, a pinned data downloader and run instructions are available in [benchmarks/](benchmarks/README.md).
 
-**Release status:** planned benchmark releases are listed under [TODO](#todo). Download links will be added when available. The [technical report](https://arxiv.org/abs/2609.40181) describes the evaluation now; [IFMTBench preprocessing](docs/evaluation.md#ifmtbench-preprocessing) is documented separately.
+| Benchmark | Public release | Dataset | Evaluation code and guide |
+|---|---|---|---|
+| **instTrans** | 3,000 translation instruction tasks; 10 constraint types | [🤗 InstTrans-Bench](https://huggingface.co/datasets/IndexTeam/InstTrans-Bench) | [insttrans](benchmarks/insttrans/README.md) |
+| **MEME** | 3,638 Chinese-to-English cases; 703 terms and 857 senses | [🤗 Meme-Translation-Bench](https://huggingface.co/datasets/IndexTeam/Meme-Translation-Bench) | [meme](benchmarks/meme/README.md) |
+| **SandGlass** | 3,600 cases: 300 subtitles × 4 target languages × 3 length budgets | [🤗 Sandglass-Bench](https://huggingface.co/datasets/IndexTeam/Sandglass-Bench) | [sandglass](benchmarks/sandglass/README.md) |
+| **NAtIveLong** | Metadata for 84 BWB and 84 GuoFeng long-document cases, evaluation code and acquisition instructions | [🤗 NAtIveLong](https://huggingface.co/datasets/IndexTeam/NAtIveLong) | [nativelong](benchmarks/nativelong/README.md) |
+
+NAtIveLong includes no source novels or reference translations: obtain official BWB data separately; GuoFeng provides a local reconstruction tool. The instTrans release does not include the 2,793 low-resource extension tasks in the evaluation tables. Original prompts are preserved; each directory's `RELEASE_REVIEW.md` records review changes and validation limits. Historical scores have not been rerun. Each benchmark has its own licensing terms; the repository's root license does not replace them.
+
+See the [full evaluation settings](docs/evaluation.md) and [IFMTBench preprocessing](docs/evaluation.md#ifmtbench-preprocessing) for other results.
 
 ## Applications
 
@@ -283,20 +355,6 @@ For the specialized models, Index-Homura-9B reaches **81.92% within 10% of the t
 Join the [QQ group (960123527)](https://qm.qq.com/q/xSASqaiEGA) for discussion and feedback. You can also scan the QR code below to join.
 
 <p align="center"><a href="https://qm.qq.com/q/xSASqaiEGA"><img src="docs/assets/qq-group.jpg" width="320" alt="QR code to join QQ group 960123527"></a></p>
-
-## News
-
-- **2026-10-03:** released official quantized builds of the 2B / 9B / 35B-A3B (preview) text models: GGUF for llama.cpp local inference (F16 + Q8_0/Q6_K/Q5/Q4/Q3/Q2_K/IQ4_XS, all bit-widths in one repository per model, vision mmproj included) and FP8 (compressed-tensors W8A8) for vLLM serving, on Hugging Face and ModelScope.
-- **2026-09-30:** released Index-Translate, with 2B / 9B / 35B-A3B (preview) text-model weights on Hugging Face and ModelScope, the technical report, and the online demo.
-
-## TODO
-
-- [ ] Release the official version of Index-Translate-35B-A3B.
-- [ ] Open-source instTrans, SandGlass-V2, nailong-bench, and meme-bench.
-- [ ] Add support for more languages to Index-Echo.
-- [ ] Release larger models.
-- [ ] Release QAT (quantization-aware training) builds for higher-quality low-bit quantization.
-- [ ] Integrate with Unsloth for efficient fine-tuning and inference.
 
 ## Papers and citation
 
